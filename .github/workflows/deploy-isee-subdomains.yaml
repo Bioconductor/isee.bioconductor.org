@@ -35,34 +35,49 @@ jobs:
       - name: Deploy iSEE subdomains
         shell: bash
         run: |
-          python3 .github/scripts/parse_csv.py config.csv | while IFS='#@#' read -r ORIGID datasetURI configURI; do
-            echo "Deploying $ID with dataset $datasetURI and config $configURI"
-            ID=$(echo "$ORIGID" | tr '[:upper:]' '[:lower:]')
-            APP_FILE="app-${ID}.R"
-            YAML_FILE="deployment-${ID}.yaml"
+          python3 .github/scripts/parse_csv.py config.csv | awk -F'#@#' '{
+            ORIGID = $1
+            datasetURI = $2 
+            configURI = $3
             
-            sed -e "s|##PLACEHOLDERDATASETURI##|\"$datasetURI\"|g" \
-                -e "s|##PLACEHOLDERCONFIGURI##|\"$configURI\"|g" \
-                .github/templates/app.R > "$APP_FILE"
+            # Convert ID to lowercase
+            ID = tolower(ORIGID)
             
-            sed -e "s/##PLACEHOLDERID##/$ID/g" \
-                .github/templates/isee-deployment.yaml > "$YAML_FILE"
+            printf "Deploying %s with dataset %s and config %s\n", ID, datasetURI, configURI
             
-            echo "Creating namespace ${ID}-isee..."
-            kubectl create namespace "${ID}-isee"
-
-            echo "Creating configmap ${ID}-isee-app..."
-            kubectl create configmap "${ID}-isee-app" \
-              --from-file=app.R="$APP_FILE" \
-              --namespace="${ID}-isee"
-
-            echo "Applying deployment YAML..."
-            kubectl apply -f "$YAML_FILE" --namespace="${ID}-isee"
+            APP_FILE = "app-" ID ".R"
+            YAML_FILE = "deployment-" ID ".yaml"
             
-            rm -f "$APP_FILE" "$YAML_FILE"
+            # Generate app.R file
+            cmd = "sed -e \"s|##PLACEHOLDERDATASETURI##|\\\"" datasetURI "\\\"|g\" -e \"s|##PLACEHOLDERCONFIGURI##|\\\"" configURI "\\\"|g\" .github/templates/app.R > " APP_FILE
+            system(cmd)
             
-            echo "Successfully deployed $ID.isee.bioconductor.org"
-            echo "---"
-          done
-          
-          echo "All deployments completed!"
+            # Generate deployment YAML
+            cmd = "sed -e \"s/##PLACEHOLDERID##/" ID "/g\" .github/templates/isee-deployment.yaml > " YAML_FILE
+            system(cmd)
+            
+            # Create namespace
+            printf "Creating namespace %s-isee...\n", ID
+            cmd = "kubectl create namespace " ID "-isee"
+            system(cmd)
+            
+            # Create configmap
+            printf "Creating configmap %s-isee-app...\n", ID
+            cmd = "kubectl create configmap " ID "-isee-app --from-file=app.R=" APP_FILE " --namespace=" ID "-isee"
+            system(cmd)
+            
+            # Apply deployment
+            printf "Applying deployment YAML...\n"
+            cmd = "kubectl apply -f " YAML_FILE " --namespace=" ID "-isee"
+            system(cmd)
+            
+            # Clean up
+            cmd = "rm -f " APP_FILE " " YAML_FILE
+            system(cmd)
+            
+            printf "Successfully deployed %s.isee.bioconductor.org\n", ID
+            print "---"
+          }
+          END {
+            print "All deployments completed!"
+          }'
