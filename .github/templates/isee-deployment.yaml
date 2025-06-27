@@ -19,6 +19,18 @@ spec:
         image: ghcr.io/almahmoud/iseeindex:devel
         ports:
         - containerPort: 3838
+        volumeMounts:
+        - name: config-volume
+          mountPath: /srv/shiny-server/app.R
+          subPath: app.R
+      volumes:
+      - name: config-volume
+        configMap:
+          name: ##PLACEHOLDERID##-isee-app
+          items:
+          - key: app.R
+            path: app.R
+
 ---
 apiVersion: v1
 kind: Service

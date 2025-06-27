@@ -1,0 +1,69 @@
+name: Deploy iSEE subdomains
+
+on:
+  workflow_dispatch:
+    inputs:
+      reset:
+        description: 'Reset the build process'
+        required: false
+        type: boolean
+        default: false
+  push:
+    paths:
+      - 'config.csv'
+
+concurrency:
+  group: deploy-isee-subdomains
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    
+      - uses: actions/checkout@v4
+
+      - name: save kubeconfig
+        shell: bash
+        run: mkdir -p ~/.kube && echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+      
+      - name: Install Kubectl
+        run: |
+          curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.24.4/bin/linux/amd64/kubectl" && \
+          chmod +x ./kubectl && \
+          mv ./kubectl /usr/local/bin/kubectl && \
+          kubectl version
+
+      - name: Deploy iSEE subdomains
+        shell: bash
+        run: |
+          python3 .github/scripts/parse_csv.py config.csv | while IFS='#@#' read -r ID datasetURI configURI; do
+            echo "Deploying $ID with dataset $datasetURI and config $configURI"
+            
+            APP_FILE="app-${ID}.R"
+            YAML_FILE="deployment-${ID}.yaml"
+            
+            sed -e "s|##PLACEHOLDERDATASETURI##|\"$datasetURI\"|g" \
+                -e "s|##PLACEHOLDERCONFIGURI##|\"$configURI\"|g" \
+                .github/templates/app.R > "$APP_FILE"
+            
+            sed -e "s/##PLACEHOLDERID##/$ID/g" \
+                .github/templates/isee-deployment.yaml > "$YAML_FILE"
+            
+            echo "Creating namespace ${ID}-isee..."
+            kubectl create namespace "${ID}-isee"
+            
+            echo "Creating configmap ${ID}-isee-app..."
+            kubectl create configmap "${ID}-isee-app" \
+              --from-file=app.R="$APP_FILE" \
+              --namespace="${ID}-isee"
+            
+            echo "Applying deployment YAML..."
+            cat "$YAML_FILE"
+            kubectl apply -f "$YAML_FILE" --namespace="${ID}-isee"
+            
+            echo "Successfully deployed $ID.isee.bioconductor.org"
+            echo "---"
+          done
+          
+          echo "All deployments completed!"
