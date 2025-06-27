@@ -1,0 +1,3 @@
+ID,datasetID,datasetTitle,datasetURI,datasetDescription,configID,configTitle,configURI,configDescription
+AllenDemo1,ReprocessedAllenData,ReprocessedAllenData,https://raw.githubusercontent.com/csoneson/iSEE-example-data/refs/heads/main/allen/allen_sce.rds,"Reprocessed Allen Data.\n",InitialConfig1,https://raw.githubusercontent.com/csoneson/iSEE-example-data/refs/heads/main/allen/allen_initial_1.R,"PCA plot + feature assay plot"
+AllenDemo2,ReprocessedAllenData,ReprocessedAllenData,https://raw.githubusercontent.com/csoneson/iSEE-example-data/refs/heads/main/allen/allen_sce.rds,"Reprocessed Allen Data.\n",InitialConfig2,https://raw.githubusercontent.com/csoneson/iSEE-example-data/refs/heads/main/allen/allen_initial_2.R,"tSNE plot + column data table + feature assay plot"
