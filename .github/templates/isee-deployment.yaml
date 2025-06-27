@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ##PLACEHOLDERID##-isee
+  labels:
+    app: isee
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: isee
+  template:
+    metadata:
+      labels:
+        app: isee
+    spec:
+      containers:
+      - name: shiny
+        image: ghcr.io/almahmoud/iseeindex:devel
+        ports:
+        - containerPort: 3838
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ##PLACEHOLDERID##-isee-service
+spec:
+  selector:
+    app: isee
+  ports:
+    - protocol: TCP
+      port: 3838
+      targetPort: 3838
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ##PLACEHOLDERID##-isee-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  tls:
+  - hosts:
+    - ##PLACEHOLDERID##.isee.bioconductor.org
+    secretName: ##PLACEHOLDERID##-iseeindex-tls
+  rules:
+  - host: ##PLACEHOLDERID##.isee.bioconductor.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ##PLACEHOLDERID##-isee-service
+            port:
+              number: 3838
