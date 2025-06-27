@@ -48,16 +48,16 @@ def parse_config_csv(csv_file):
                     continue
                 
                 # Ensure we have enough columns
-                if len(row) < 7:
+                if len(row) < 8:
                     print(f"Warning: Row {row_number} has insufficient columns ({len(row)}), skipping", 
                           file=sys.stderr)
                     continue
                 
                 # Extract required fields (0-indexed)
-                # Based on actual CSV data: configURI is in column 6 (configTitle field)
+                # Based on CSV structure: ID (0), datasetURI (3), configURI (7)
                 ID = row[0].strip()
                 datasetURI = row[3].strip()  # Column 4: datasetURI
-                configURI = row[6].strip()   # Column 7: configTitle field contains the actual configURI
+                configURI = row[7].strip()   # Column 8: configURI
                 
                 # Validate required fields are not empty
                 if not ID:
@@ -95,7 +95,7 @@ def main():
     # Parse CSV and output results
     for ID, datasetURI, configURI in parse_config_csv(csv_file):
         # Output in pipe-delimited format for shell processing
-        print(f"{ID}|{datasetURI}|{configURI}")
+        print(f"{ID}#@#{datasetURI}#@#{configURI}")
 
 if __name__ == "__main__":
     main()

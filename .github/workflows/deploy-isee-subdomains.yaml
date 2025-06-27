@@ -52,15 +52,16 @@ jobs:
             
             echo "Creating namespace ${ID}-isee..."
             kubectl create namespace "${ID}-isee"
-            
+
             echo "Creating configmap ${ID}-isee-app..."
             kubectl create configmap "${ID}-isee-app" \
               --from-file=app.R="$APP_FILE" \
               --namespace="${ID}-isee"
-            
+
             echo "Applying deployment YAML..."
-            cat "$YAML_FILE"
             kubectl apply -f "$YAML_FILE" --namespace="${ID}-isee"
+            
+            rm -f "$APP_FILE" "$YAML_FILE"
             
             echo "Successfully deployed $ID.isee.bioconductor.org"
             echo "---"
