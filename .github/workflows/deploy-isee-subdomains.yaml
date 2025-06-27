@@ -2,12 +2,6 @@ name: Deploy iSEE subdomains
 
 on:
   workflow_dispatch:
-    inputs:
-      reset:
-        description: 'Reset the build process'
-        required: false
-        type: boolean
-        default: false
   push:
     paths:
       - 'config.csv'
@@ -37,9 +31,9 @@ jobs:
       - name: Deploy iSEE subdomains
         shell: bash
         run: |
-          python3 .github/scripts/parse_csv.py config.csv | while IFS='#@#' read -r ID datasetURI configURI; do
+          python3 .github/scripts/parse_csv.py config.csv | while IFS='#@#' read -r ORIGID datasetURI configURI; do
             echo "Deploying $ID with dataset $datasetURI and config $configURI"
-            
+            ID=$(echo "$ORIGID" | tr '[:upper:]' '[:lower:]')
             APP_FILE="app-${ID}.R"
             YAML_FILE="deployment-${ID}.yaml"
             
