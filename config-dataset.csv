@@ -1,4 +1,4 @@
 datasetID,datasetTitle,datasetURI,datasetDescription
-ReprocessedAllen,ReprocessedAllen,https://raw.githubusercontent.com/csoneson/iSEE-example-data/refs/heads/main/allen/allen_sce.rds,"Reprocessed Allen Data."
-Macrophage,Macrophage,https://raw.githubusercontent.com/csoneson/iSEE-example-data/refs/heads/main/macrophage/macrophage_sce.rds,"Macrophage Data."
-TENxPBMC3k,TENxPBMC3k,https://raw.githubusercontent.com/csoneson/iSEE-example-data/refs/heads/main/pbmc3k/pbmc3k_sce.rds,"10x PBMC3k Data."
+ReprocessedAllen,ReprocessedAllen,https://raw.githubusercontent.com/csoneson/iSEE-example-data/f7c34b16644f199c83e309159fda4218c0e3b9cc/allen/allen_sce.rds,"Reprocessed Allen Data."
+Macrophage,Macrophage,https://raw.githubusercontent.com/csoneson/iSEE-example-data/7c0fec198654d25170a8b2ac68a6a532a2c663b1/macrophage/macrophage_sce.rds,"Macrophage Data."
+TENxPBMC3k,TENxPBMC3k,https://raw.githubusercontent.com/csoneson/iSEE-example-data/6656ad78f1465350aea17f5b86f207e3af4b214b/pbmc3k/pbmc3k_sce.rds,"10x PBMC3k Data."
