@@ -30,10 +30,6 @@ jobs:
           mv ./kubectl /usr/local/bin/kubectl && \
           kubectl version
 
-      - name: Clean up old pods
-        run: |
-          kubectl get pod -n isee-cofest2025 -o name | xargs -i kubectl delete -n isee-cofest2025 {}
-
       - name: Deploy iSEE subdomains
         shell: bash
         run: |
@@ -83,3 +79,7 @@ jobs:
           END {
             print "All deployments completed!"
           }'
+
+      - name: Clean up old pods
+        run: |
+          kubectl get pod -n isee-cofest2025 -o name | xargs -i kubectl delete -n isee-cofest2025 {}
