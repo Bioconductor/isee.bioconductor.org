@@ -1,0 +1,4 @@
+datasetID,datasetTitle,datasetURI,datasetDescription
+ReprocessedAllen,ReprocessedAllen,https://raw.githubusercontent.com/csoneson/iSEE-example-data/refs/heads/main/allen/allen_sce.rds,"Reprocessed Allen Data."
+Macrophage,Macrophage,https://raw.githubusercontent.com/csoneson/iSEE-example-data/refs/heads/main/macrophage/macrophage_sce.rds,"Macrophage Data."
+TENxPBMC3k,TENxPBMC3k,https://raw.githubusercontent.com/csoneson/iSEE-example-data/refs/heads/main/pbmc3k/pbmc3k_sce.rds,"10x PBMC3k Data."
