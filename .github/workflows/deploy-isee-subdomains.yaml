@@ -3,6 +3,8 @@ name: Deploy iSEE subdomains
 on:
   workflow_dispatch:
   push:
+    branches:
+      - devel
     paths:
       - 'config.csv'
 
