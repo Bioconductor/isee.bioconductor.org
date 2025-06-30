@@ -6,7 +6,8 @@ on:
     branches:
       - devel
     paths:
-      - 'config.csv'
+      - 'config-dataset.csv'
+      - 'config-initial.csv'
 
 concurrency:
   group: deploy-isee-subdomains
@@ -33,7 +34,7 @@ jobs:
       - name: Deploy iSEE subdomains
         shell: bash
         run: |
-          python3 .github/scripts/parse_csv.py config.csv | awk -F'#@#' '{
+          python3 .github/scripts/parse_csv.py config-dataset.csv config-initial.csv | awk -F'#@#' '{
             ORIGID = $1
             datasetURI = $2 
             configURI = $3

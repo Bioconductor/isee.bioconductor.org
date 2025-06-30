@@ -1,0 +1,6 @@
+ID,datasetID,configID,configTitle,configURI,configDescription,biocversion
+AllenDemo1,ReprocessedAllen,Allen_Config1,InitialConfig1,https://raw.githubusercontent.com/csoneson/iSEE-example-data/734b99c300ea65fede0bccd317f1488c9c7785b6/allen/allen_initial_1.R,"PCA plot + feature assay plot",3.21
+AllenDemo2,ReprocessedAllen,Allen_Config2,InitialConfig2,https://raw.githubusercontent.com/csoneson/iSEE-example-data/734b99c300ea65fede0bccd317f1488c9c7785b6/allen/allen_initial_2.R,"tSNE plot + column data table + feature assay plot",3.21
+Macrophage1,Macrophage,Macrophage_Config1,InitialConfig1,https://raw.githubusercontent.com/csoneson/iSEE-example-data/7c0fec198654d25170a8b2ac68a6a532a2c663b1/macrophage/macrophage_initial_1.R,"DE results",3.21
+TENxPBMC3k1,TENxPBMC3k,TENxPBMC3k_Config1,InitialConfig1,https://raw.githubusercontent.com/csoneson/iSEE-example-data/6656ad78f1465350aea17f5b86f207e3af4b214b/pbmc3k/pbmc3k_initial_1.R,"tSNE + dynamic marker table + feature assay plot",3.21
+AllenDemo3,ReprocessedAllen,Allen_Config3,InitialConfig3,https://raw.githubusercontent.com/csoneson/iSEE-example-data/1c94670287cc4be597c79d349f98cc30ec5e45f5/allen/allen_initial_3.R,"tSNE plot + feature assay plot",3.21
