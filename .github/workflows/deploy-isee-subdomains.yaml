@@ -83,4 +83,4 @@ jobs:
 
       - name: Clean up old pods
         run: |
-          kubectl get pod -n isee-cofest2025 -o name | xargs -i kubectl delete -n isee-cofest2025 {}
+          sleep 60 && kubectl get pod -n isee-cofest2025 -o name | xargs -i kubectl delete -n isee-cofest2025 {}
